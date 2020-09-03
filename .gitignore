@@ -1,0 +1,5 @@
+.java-version
+.gradle
+gradlew.bat
+gradlew
+gradle/**
