@@ -1,4 +1,8 @@
 #!/bin/bash -e
+
+if [ ! -d "libs"] {
+    mkdir libs
+}
 INSTRUMENTATION_TEST_BUILT="newrelic-agent/instrumentation-test/build/libs/instrumentation-test-*-SNAPSHOT.jar"
 AGENT_INTERFACES_BUILT="newrelic-agent/agent-interfaces/build/libs/agent-interfaces-*-SNAPSHOT.jar"
 AGENT_MODEL_BUILT="newrelic-agent/agent-model/build/libs/agent-model-*-SNAPSHOT.jar"
