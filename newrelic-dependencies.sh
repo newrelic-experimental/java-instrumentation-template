@@ -1,8 +1,10 @@
 #!/bin/bash -e
 
-if [ ! -d "libs"] {
+if [ ! -d "libs" ];
+then
     mkdir libs
-}
+fi
+
 INSTRUMENTATION_TEST_BUILT="newrelic-agent/instrumentation-test/build/libs/instrumentation-test-*-SNAPSHOT.jar"
 AGENT_INTERFACES_BUILT="newrelic-agent/agent-interfaces/build/libs/agent-interfaces-*-SNAPSHOT.jar"
 AGENT_MODEL_BUILT="newrelic-agent/agent-model/build/libs/agent-model-*-SNAPSHOT.jar"
@@ -27,7 +29,7 @@ function checkForFiles {
     fi
     if [ ! -f $AGENT_INTERFACES_LIBS ]; 
     then
-       if [ ! -f $AGENT_INTERFACES_BUILT];
+       if [ ! -f $AGENT_INTERFACES_BUILT ];
        then
          buildAgentInterfaces
        fi
@@ -35,7 +37,7 @@ function checkForFiles {
     fi
     if [ ! -f $AGENT_MODEL_LIBS ]; 
     then
-       if [ ! -f $AGENT_MODEL_BUILT];
+       if [ ! -f $AGENT_MODEL_BUILT ];
        then
         buildAgentModel
        fi
@@ -43,7 +45,7 @@ function checkForFiles {
     fi
     if [ ! -f $AGENT_BRIDGE_LIBS ]; 
     then
-       if [ ! -f $AGENT_BRIDGE_BUILT];
+       if [ ! -f $AGENT_BRIDGE_BUILT ];
        then
         buildAgentBridge
        fi
@@ -51,7 +53,7 @@ function checkForFiles {
     fi
     if [ ! -f $AGENT_BRIDGE_DS_LIBS ]; 
     then
-       if [ ! -f $AGENT_BRIDGE_DS_BUILT];
+       if [ ! -f $AGENT_BRIDGE_DS_BUILT ];
        then
         buildAgentBridgeDatastore
        fi
