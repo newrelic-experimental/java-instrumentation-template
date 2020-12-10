@@ -10,6 +10,15 @@ project.ext {
 
 }
 
+task checkForDependencies(type: Exec) {
+    environment "JAVAAGENTVERSION", javaAgentVersion
+    def rootProject = projectDir.path
+    def cmdLine = rootProject+'/newrelic-dependencies.sh'
+    workingDir rootProject
+    commandLine  cmdLine 
+
+}
+
 buildscript {
   repositories {
     maven {
@@ -33,10 +42,14 @@ buildscript {
 import templates.*
 
 task createModule {
+  dependsOn checkForDependencies
   description = 'Generate project files for a new instrumentation module'
   group = 'New Relic'
   doLast {
-    String projectGroup = TemplatesPlugin.prompt('Instrumentation Module Group (default: ' + project.ext.group + '):\n')
+
+    def rootProject = projectDir.path
+    
+    String projectGroup = TemplatesPlugin.prompt('Instrumentation Module Group (default: ' + project.ext.group + ') (Hit return to use default):\n')
     String projectName = TemplatesPlugin.prompt('Instrumentation Module Name:\n')
 
     if (projectName == null) {
@@ -50,6 +63,8 @@ task createModule {
     } else {
       projectGroup = projectGroup.trim()
     }
+
+    def projectLibDir = new File(rootProject+'/lib')
 
     def projectPath = new File(projectName)
     if (projectPath.exists()) {
@@ -75,6 +90,7 @@ task createModule {
            // New Relic Java Agent dependencies
            implementation 'com.newrelic.agent.java:newrelic-agent:JAVA_AGENT_VERSION'
            implementation 'com.newrelic.agent.java:newrelic-api:JAVA_AGENT_VERSION'
+           implementation fileTree(include: ['*.jar'], dir: '../libs')
         }
 
         jar {
@@ -119,8 +135,8 @@ subprojects {
   targetCompatibility = project.javaVersion
 
   dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.11'
-    testImplementation 'com.newrelic.agent.java:instrumentation-test:' + project.javaAgentVersion
+    testImplementation  fileTree(dir: '../lib', include: "*.jar") // + project.javaAgentVersion
+    testImplementation 'org.nanohttpd:nanohttpd:2.3.1'
     testImplementation 'com.newrelic.agent.java:newrelic-agent:' + project.javaAgentVersion
   }
 
