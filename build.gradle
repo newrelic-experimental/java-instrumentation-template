@@ -1,33 +1,10 @@
 // Build.gradle for creating or installing new instrumentation modules
 
+
 // Global defaults - override here or in individual modules as needed.
-project.ext {
-  group = 'com.newrelic.instrumentation'
-  javaAgentVersion = '6.0.0'
-
-  // Aligned with minimum Java major version supported by latest Java Agent
-  javaVersion = JavaVersion.VERSION_1_8
-
-}
-
-task checkForDependencies(type: Exec) {
-    environment "JAVAAGENTVERSION", javaAgentVersion
-    def rootProject = projectDir.path
-    def cmdLine = rootProject+'/newrelic-dependencies.sh'
-    workingDir rootProject
-    commandLine  cmdLine 
-
-}
-
 buildscript {
   repositories {
-    maven {
-      url 'https://dl.bintray.com/cjstehno/public'
-      metadataSources {
-        mavenPom()
-        artifact()
-      }
-    }
+    flatDir dirs: 'template-lib'
     mavenLocal()
     mavenCentral()
     gradlePluginPortal()
@@ -39,7 +16,56 @@ buildscript {
   }
 }
 
+plugins {
+  id "de.undercouch.download" version "1.2"
+}
+
+project.ext {
+  group = 'com.newrelic.instrumentation'
+  javaAgentVersion = '6.0.0'
+
+  // Aligned with minimum Java major version supported by latest Java Agent
+  javaVersion = JavaVersion.VERSION_1_8
+
+}
+
+apply plugin: 'java'
+apply plugin: 'de.undercouch.download'
+
 import templates.*
+import de.undercouch.gradle.tasks.download.Download
+
+task getAgent(type: Download) {
+   def rootProject = projectDir.path
+   src 'https://repo1.maven.org/maven2/com/newrelic/agent/java/newrelic-agent/'+project.javaAgentVersion+'/newrelic-agent-'+project.javaAgentVersion+'.jar'
+   dest projectDir.path+"/libs/newrelic-agent-"+project.javaAgentVersion+".jar"
+}
+
+task extractJars(type: Copy) {
+
+    from zipTree(projectDir.path+"/libs/newrelic-agent-"+project.javaAgentVersion+".jar")
+    into projectDir.path+"/libs"
+}
+
+task cleanUp(type: Delete) {
+  delete projectDir.path+'/libs/META-INF', projectDir.path+'/libs/com', projectDir.path+'/libs/mozilla'
+  delete projectDir.path+'/libs/LICENSE', projectDir.path+'/libs/Log4j-events.dtd', projectDir.path+'/libs/THIRD_PARTY_NOTICES.md'
+  delete fileTree(projectDir.path+'/libs') {
+    include '**/*.xsd'
+    include '**/*.xml'
+    include '**/*.yml'
+    include '**/*.properties'
+  }
+}
+
+task checkForDependencies(type: Exec) {
+    environment "JAVAAGENTVERSION", javaAgentVersion
+    def rootProject = projectDir.path
+    def cmdLine = rootProject+'/newrelic-dependencies.sh'
+    workingDir rootProject
+    commandLine  cmdLine
+
+}
 
 task createModule {
   dependsOn checkForDependencies
@@ -48,7 +74,7 @@ task createModule {
   doLast {
 
     def rootProject = projectDir.path
-    
+
     String projectGroup = TemplatesPlugin.prompt('Instrumentation Module Group (default: ' + project.ext.group + ') (Hit return to use default):\n')
     String projectName = TemplatesPlugin.prompt('Instrumentation Module Name:\n')
 
