@@ -1,10 +1,1 @@
-plugins {
-    id 'com.alexvasilkov.git-dependencies' version '2.0.1'
-}
-git {
-    fetch 'https://github.com/newrelic/newrelic-java-agent.git', {
-        dir "$rootDir/newrelic-agent/"
-        tag 'v6.0.0'
-    }
-}
 rootProject.name = 'java-instrumentation-template'
