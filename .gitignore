@@ -1,5 +1,3 @@
 .java-version
-.gradle
-gradlew.bat
-gradlew
-gradle/**
+.git
+.github
