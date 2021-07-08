@@ -67,6 +67,12 @@ task checkForDependencies(type: Exec) {
 
 }
 
+task buildIfNeeded {
+   dependsOn checkForDependencies
+   dependsOn jar
+   tasks.findByName('jar').mustRunAfter 'checkForDependencies'
+}
+
 task createModule {
   dependsOn checkForDependencies
   description = 'Generate project files for a new instrumentation module'
@@ -166,7 +172,7 @@ subprojects {
     testImplementation 'com.newrelic.agent.java:newrelic-agent:' + project.javaAgentVersion
   }
 
-  task install(dependsOn: jar, type: Copy) {
+  task install(dependsOn: buildIfNeeded, type: Copy) {
     description = 'Copies compiled jar to the NEW_RELIC_EXTENSIONS_DIR.'
     group  = 'New Relic'
 
