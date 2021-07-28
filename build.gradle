@@ -123,6 +123,7 @@ task createModule {
            implementation 'com.newrelic.agent.java:newrelic-agent:JAVA_AGENT_VERSION'
            implementation 'com.newrelic.agent.java:newrelic-api:JAVA_AGENT_VERSION'
            implementation fileTree(include: ['*.jar'], dir: '../libs')
+           implementation fileTree(include: ['*.jar'], dir: '../test-lib')
         }
 
         jar {
