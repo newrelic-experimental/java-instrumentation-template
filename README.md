@@ -21,6 +21,22 @@
 
 >[Brief description - what is the project and value does it provide? How often should users expect to get releases? How is versioning set up? Where does this project want to go?]
 
+## Value 
+
+|Metrics | Events | Logs | Traces | Visualization | Automation |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|:x:|:x:|:x:|:white_check_mark:|:x:|:x:|
+
+### List of Metrics,Events,Logs,Traces 
+|Name | Type | Description |
+|:-:|:-:|:-:|
+|*metric.name* | Metric| *description*|
+|*event.name* | Event|  *description*|
+|*log.name* | Log|  *description*|
+|*trace.name*| Trace| *description*
+|---|---|---|
+
+  
 ## Installation
 
 > [Include a step-by-step procedure on how to get your code installed. Be sure to include any third-party dependencies that need to be installed separately]
