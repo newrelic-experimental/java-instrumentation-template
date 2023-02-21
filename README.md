@@ -1,4 +1,4 @@
-[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/main/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
+<a href="https://opensource.newrelic.com/oss-category/#new-relic-experimental"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/newrelic/opensource-website/raw/main/src/images/categories/dark/Experimental.png"><source media="(prefers-color-scheme: light)" srcset="https://github.com/newrelic/opensource-website/raw/main/src/images/categories/Experimental.png"><img alt="New Relic Open Source experimental project banner." src="https://github.com/newrelic/opensource-website/raw/main/src/images/categories/Experimental.png"></picture></a>
 
 
 ![GitHub forks](https://img.shields.io/github/forks/newrelic-experimental/java-instrumentation-template?style=social)
@@ -21,13 +21,13 @@
 
 >[Brief description - what is the project and value does it provide? How often should users expect to get releases? How is versioning set up? Where does this project want to go?]
 
-## Value 
+## Value
 
 |Metrics | Events | Logs | Traces | Visualization | Automation |
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |:x:|:x:|:x:|:white_check_mark:|:x:|:x:|
 
-### List of Metrics,Events,Logs,Traces 
+### List of Metrics,Events,Logs,Traces
 |Name | Type | Description |
 |:-:|:-:|:-:|
 |*metric.name* | Metric| *description*|
@@ -36,7 +36,7 @@
 |*trace.name*| Trace| *description*
 |---|---|---|
 
-  
+
 ## Installation
 
 > [Include a step-by-step procedure on how to get your code installed. Be sure to include any third-party dependencies that need to be installed separately]
