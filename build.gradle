@@ -21,7 +21,7 @@ plugins {
 }
 
 project.ext {
-  group = 'com.newrelic.instrumentation'
+  group = 'com.newrelic.instrumentation.labs'
   javaAgentVersion = '6.4.0'
 
   // Aligned with minimum Java major version supported by latest Java Agent
