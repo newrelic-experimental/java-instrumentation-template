@@ -31,7 +31,6 @@ jobs:
 
       - name: Build with Gradle and verifyInstrumentation
         run: |
-          . ./newrelic-dependencies.sh
           ./gradlew clean build install verifyInstrumentation
 
       - name: Identify Release Type
