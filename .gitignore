@@ -1,2 +1,4 @@
 .java-version
 .git
+.no-leaks-ignore
+.no-leaks-safe
