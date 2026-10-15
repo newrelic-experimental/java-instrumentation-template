@@ -112,12 +112,15 @@ done <<< "$STAGED_FILES"
 
 # ── Section 2: Content scans ──────────────────────────────────────────────────
 
-# Strip generated lockfiles from diff before content scanning —
-# package-lock.json and yarn.lock are not developer-controlled content.
-DIFF=$(git diff --cached | awk '
-    /^diff --git.*package-lock\.json/ { skip=1 }
-    /^diff --git.*yarn\.lock/         { skip=1 }
-    /^diff --git/ && !/package-lock\.json|yarn\.lock/ { skip=0 }
+# Build awk ignore pattern — built-in lockfiles plus any entries from .no-leaks-ignore.
+# Files matched here are stripped from the diff entirely (Section 1 AND Section 2).
+AWK_IGNORE='package-lock\.json|yarn\.lock'
+for pattern in "${PRE_COMMIT_IGNORE[@]}"; do
+    AWK_IGNORE="$AWK_IGNORE|$pattern"
+done
+
+DIFF=$(git diff --cached | awk -v ignore="$AWK_IGNORE" '
+    /^diff --git/ { skip = ($0 ~ ignore) }
     !skip && /^\+/ && !/^\+\+\+/ { print }
 ')
 
