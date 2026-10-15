@@ -112,7 +112,14 @@ done <<< "$STAGED_FILES"
 
 # ── Section 2: Content scans ──────────────────────────────────────────────────
 
-DIFF=$(git diff --cached | grep "^+" | grep -v "^+++")
+# Strip generated lockfiles from diff before content scanning —
+# package-lock.json and yarn.lock are not developer-controlled content.
+DIFF=$(git diff --cached | awk '
+    /^diff --git.*package-lock\.json/ { skip=1 }
+    /^diff --git.*yarn\.lock/         { skip=1 }
+    /^diff --git/ && !/package-lock\.json|yarn\.lock/ { skip=0 }
+    !skip && /^\+/ && !/^\+\+\+/ { print }
+')
 
 # Safe patterns — these are never flagged even if they match a scan pattern
 SAFE='(YOUR_[A-Z_]+|<[-A-Za-z0-9_ ]+>|PLACEHOLDER|localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(com|org|net)|newrelic\.com|nr-data\.net|nr-ext\.net|maven\.org|gradle\.org|plugins\.gradle\.org|github\.com|githubusercontent\.com|squareup\.com|slf4j\.org|qos\.ch|apache\.org|google\.com|googleapis\.com|shields\.io|opensource\.newrelic\.com|xmlsoap\.org|w3\.org|sap\.com|\[a-zA-Z\])'
